@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  TicTacToe
 //
-//  Created by Candis on 5/12/15.
+//  Created by Maurice Carrier  on 5/12/15.
 //  Copyright (c) 2015 MauriceCarrier. All rights reserved.
 //
 
