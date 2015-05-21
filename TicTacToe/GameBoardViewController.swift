@@ -36,6 +36,8 @@ class  GameBoardViewController: UIViewController {
     //Used to retain values for each space
     var buttonDictionary = [String: String]()
     
+    var isUsersTurn = Bool()
+    
     
     //MARK: Initialization
     
@@ -93,13 +95,14 @@ class  GameBoardViewController: UIViewController {
         userSymbol = selectedSymbol
         
         if userSymbol == "X" {
-            setDisplayText("Please choose a space.")
             challengerSymbol = "O"
         } else {
             challengerSymbol = "X"
+            isUsersTurn = false
             var challengerSelection = AutomationDelegate.challengerChooseSpace(GameBoardDelegate.getChosenSpaces(), isFirstMove: true)
             mapButtons(challengerSelection, symbol: challengerSymbol)
         }
+        isUsersTurn = true
         setDisplayText("Please choose a space.")
         
     }
@@ -110,14 +113,17 @@ class  GameBoardViewController: UIViewController {
     */
     @IBAction func spaceSelected(sender: AnyObject) {
         
-        // Record users move
-        mapButtons(sender.restorationIdentifier, symbol: userSymbol)
-        setDisplayText("")
-        
-        
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
-            self.challengersTurn()
+        if(isUsersTurn) {
+            // Record users move
+            mapButtons(sender.restorationIdentifier, symbol: userSymbol)
+            setDisplayText("")
+            isUsersTurn = false
+            
+            
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+            dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+                self.challengersTurn()
+            }
         }
         
     }
@@ -143,6 +149,7 @@ class  GameBoardViewController: UIViewController {
             if let challengerWins = isGameOver[true] {
                 gameOver(challengerWins)
             } else {
+                isUsersTurn = true
                 setDisplayText("Please choose a space.")
             }
         }
@@ -265,6 +272,7 @@ class  GameBoardViewController: UIViewController {
         userSymbol = ""
         GameBoardDelegate.resetChosenSpaces()
         setDisplayText("")
+        isUsersTurn = false
         
         self.viewDidAppear(true)
     }
