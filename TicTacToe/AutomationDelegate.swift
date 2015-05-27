@@ -113,11 +113,20 @@ class AutomationDelegate: NSObject {
             if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[0], user: false) {
                 return usedSpaces[0]
             }
-            
+        }
+        if usedSpaces[1] == usedSpaces[3] {
+            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[0], user: false) {
+                return usedSpaces[0]
+            }
         }
         if usedSpaces[1] == usedSpaces[4] {
             if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[7], user: false) {
                 return usedSpaces[7]
+            }
+        }
+        if usedSpaces[1] == usedSpaces[5] {
+            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[2], user: false) {
+                return usedSpaces[2]
             }
         }
         if usedSpaces[1] == usedSpaces[7] {
@@ -160,6 +169,11 @@ class AutomationDelegate: NSObject {
                 return usedSpaces[0]
             }
         }
+        if usedSpaces[3] == usedSpaces[7] {
+            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[6], user: false) {
+                return usedSpaces[6]
+            }
+        }
         if usedSpaces[4] == usedSpaces[5] {
             if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[3], user: false) {
                 return usedSpaces[3]
@@ -175,11 +189,17 @@ class AutomationDelegate: NSObject {
                 return usedSpaces[1]
             }
         }
+        if usedSpaces[5] == usedSpaces[7] {
+            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[8], user: false) {
+                return usedSpaces[8]
+            }
+        }
         if usedSpaces[5] == usedSpaces[8] {
             if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[2], user: false) {
                 return usedSpaces[2]
             }
         }
+        
         if usedSpaces[6] == usedSpaces[7] {
             if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[8], user: false) {
                 return usedSpaces[8]
