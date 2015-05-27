@@ -11,8 +11,9 @@
 		41D6AA3D1B0290DC00852764 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D6AA3C1B0290DC00852764 /* AppDelegate.swift */; };
 		41D6AA3F1B0290DC00852764 /* GameBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D6AA3E1B0290DC00852764 /* GameBoardViewController.swift */; };
 		41D6AA421B0290DC00852764 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41D6AA401B0290DC00852764 /* Main.storyboard */; };
-		41D6AA471B0290DC00852764 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41D6AA451B0290DC00852764 /* LaunchScreen.xib */; };
 		41D6AA531B0290DD00852764 /* TicTacToeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D6AA521B0290DD00852764 /* TicTacToeTests.swift */; };
+		670355B51B157EE80022AF1B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 670355B41B157EE80022AF1B /* LaunchScreen.xib */; };
+		670355B71B157F640022AF1B /* imageCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 670355B61B157F640022AF1B /* imageCatalog.xcassets */; };
 		67AE12D91B03A4FD00FF95F7 /* AutomationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE12D81B03A4FD00FF95F7 /* AutomationDelegate.swift */; };
 		67AE130B1B07A4DA00FF95F7 /* AutomationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE12D81B03A4FD00FF95F7 /* AutomationDelegate.swift */; };
 		67AE130C1B07A4DE00FF95F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D6AA3C1B0290DC00852764 /* AppDelegate.swift */; };
@@ -37,10 +38,11 @@
 		41D6AA3C1B0290DC00852764 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41D6AA3E1B0290DC00852764 /* GameBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardViewController.swift; sourceTree = "<group>"; };
 		41D6AA411B0290DC00852764 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		41D6AA461B0290DC00852764 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		41D6AA4C1B0290DD00852764 /* TicTacToeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicTacToeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		41D6AA511B0290DD00852764 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		41D6AA521B0290DD00852764 /* TicTacToeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeTests.swift; sourceTree = "<group>"; };
+		670355B41B157EE80022AF1B /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		670355B61B157F640022AF1B /* imageCatalog.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = imageCatalog.xcassets; sourceTree = "<group>"; };
 		67AE12D81B03A4FD00FF95F7 /* AutomationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,8 +139,9 @@
 		67AE130A1B07A3D000FF95F7 /* Interface Resources */ = {
 			isa = PBXGroup;
 			children = (
+				670355B61B157F640022AF1B /* imageCatalog.xcassets */,
+				670355B41B157EE80022AF1B /* LaunchScreen.xib */,
 				41D6AA401B0290DC00852764 /* Main.storyboard */,
-				41D6AA451B0290DC00852764 /* LaunchScreen.xib */,
 			);
 			name = "Interface Resources";
 			sourceTree = "<group>";
@@ -224,8 +227,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				670355B71B157F640022AF1B /* imageCatalog.xcassets in Resources */,
+				670355B51B157EE80022AF1B /* LaunchScreen.xib in Resources */,
 				41D6AA421B0290DC00852764 /* Main.storyboard in Resources */,
-				41D6AA471B0290DC00852764 /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,14 +283,6 @@
 				41D6AA411B0290DC00852764 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		41D6AA451B0290DC00852764 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41D6AA461B0290DC00852764 /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
