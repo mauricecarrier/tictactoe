@@ -12,6 +12,21 @@ import UIKit
 
 class AutomationDelegate: NSObject {
     
+    // dictionary of selected spaces used to run minimax
+    static var minMaxChosenSpaces :[String:String] = [String:String]()
+    static var mappedChosenSpaces = [String]()
+    static var winningSequence = [0:[0,1,2],
+        1:[3,4,5],
+        2:[6,7,8],
+        3:[0,3,6],
+        4:[1,4,7],
+        5:[2,5,8],
+        6:[0,4,8],
+        7:[2,4,6]]
+    
+    static var userSymbol = GameBoardViewController.getUserSymbol()
+    static var challengerSymbol = GameBoardViewController.getChallengerSymbol()
+    
     /**
     Analyzes selected spaces and chooses next move for challenger
     
@@ -23,6 +38,26 @@ class AutomationDelegate: NSObject {
         
         var userSymbol = GameBoardViewController.getUserSymbol()
         var challengersSelection = String()
+        var usedSpaces : [String] = mapButtonsToSpaces(chosenSpaces)
+        self.minMaxChosenSpaces = chosenSpaces
+        
+        if chosenSpaces.count == 0 {
+            return "buttonFive"
+        }
+        
+        challengersSelection = evaluateBestMove(usedSpaces, isChallenger: true)
+        return challengersSelection
+    }
+    
+    /**
+    Maps chosen spaces to the corresponding button on the UI
+    
+    :param: selectedSpaces dictionary of spaces already chosen
+    
+    :returns: array of buttons matching usedSpaces
+    
+    */
+    static func mapButtonsToSpaces(chosenSpaces: [String: String]) -> [String] {
         var usedSpaces = ["buttonOne","buttonTwo","buttonThree","buttonFour","buttonFive",
             "buttonSix","buttonSeven","buttonEight","buttonNine"]
         
@@ -54,11 +89,8 @@ class AutomationDelegate: NSObject {
             usedSpaces[8]   = buttonNine
         }
         
-        challengersSelection = evaluateBestMove(usedSpaces, isFirstMove: isFirstMove)
-        
-        return challengersSelection
+        return usedSpaces
     }
-    
     
     /**
     Evaluates best move for ai using spaces previously selected
@@ -67,157 +99,102 @@ class AutomationDelegate: NSObject {
     
     :returns: string representing best move for ai to make
     */
-    static func evaluateBestMove(usedSpaces: [String], isFirstMove: Bool) -> String {
+    static func evaluateBestMove(usedSpaces: [String], isChallenger: Bool) -> String {
         
-        // Take Middle space if open
-        if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[4], user: false) {
-            return usedSpaces[4]
-            //Prevents fork from occuring by selecting corner if user has center
-        } else if usedSpaces[4] == GameBoardViewController.getUserSymbol() && isFirstMove {
-            let forkBusterArray = [0,2,6,8]
-            let randomIndex = Int(arc4random_uniform(UInt32(forkBusterArray.count)))
-            return usedSpaces[forkBusterArray[randomIndex]]
-        }
-        
-        if usedSpaces[0] == usedSpaces[1] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[2], user: false) {
-                return usedSpaces[2]
-            }
-        }
-        if usedSpaces[0] == usedSpaces[2] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[1], user: false) {
-                return usedSpaces[1]
-            }
-        }
-        if usedSpaces[0] == usedSpaces[3] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[6], user: false) {
-                return usedSpaces[6]
-            }
-        }
-        if usedSpaces[0] == usedSpaces[4] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[8], user: false) {
-                return usedSpaces[8]
-            }
-        }
-        if usedSpaces[0] == usedSpaces[6] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[3], user: false) {
-                return usedSpaces[3]
-            }
-        }
-        if usedSpaces[0] == usedSpaces[8] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[5], user: false) {
-                return usedSpaces[5]
-            }
-        }
-        if usedSpaces[1] == usedSpaces[2] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[0], user: false) {
-                return usedSpaces[0]
-            }
-        }
-        if usedSpaces[1] == usedSpaces[3] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[0], user: false) {
-                return usedSpaces[0]
-            }
-        }
-        if usedSpaces[1] == usedSpaces[4] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[7], user: false) {
-                return usedSpaces[7]
-            }
-        }
-        if usedSpaces[1] == usedSpaces[5] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[2], user: false) {
-                return usedSpaces[2]
-            }
-        }
-        if usedSpaces[1] == usedSpaces[7] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[4], user: false) {
-                return usedSpaces[4]
-            }
-        }
-        if usedSpaces[2] == usedSpaces[4] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[6], user: false) {
-                return usedSpaces[6]
-            }
-        }
-        if usedSpaces[2] == usedSpaces[5] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[8], user: false) {
-                return usedSpaces[8]
-            }
-        }
-        if usedSpaces[2] == usedSpaces[6] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[4], user: false) {
-                return usedSpaces[4]
-            }
-        }
-        if usedSpaces[2] == usedSpaces[8] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[5], user: false) {
-                return usedSpaces[5]
-            }
-        }
-        if usedSpaces[3] == usedSpaces[4] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[5], user: false) {
-                return usedSpaces[5]
-            }
-        }
-        if usedSpaces[3] == usedSpaces[5] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[4], user: false) {
-                return usedSpaces[4]
-            }
-        }
-        if usedSpaces[3] == usedSpaces[6] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[0], user: false) {
-                return usedSpaces[0]
-            }
-        }
-        if usedSpaces[3] == usedSpaces[7] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[6], user: false) {
-                return usedSpaces[6]
-            }
-        }
-        if usedSpaces[4] == usedSpaces[5] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[3], user: false) {
-                return usedSpaces[3]
-            }
-        }
-        if usedSpaces[4] == usedSpaces[6] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[2], user: false) {
-                return usedSpaces[2]
-            }
-        }
-        if usedSpaces[4] == usedSpaces[7] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[1], user: false) {
-                return usedSpaces[1]
-            }
-        }
-        if usedSpaces[5] == usedSpaces[7] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[8], user: false) {
-                return usedSpaces[8]
-            }
-        }
-        if usedSpaces[5] == usedSpaces[8] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[2], user: false) {
-                return usedSpaces[2]
-            }
-        }
-        
-        if usedSpaces[6] == usedSpaces[7] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[8], user: false) {
-                return usedSpaces[8]
-            }
-        }
-        if usedSpaces[6] == usedSpaces[8] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[7], user: false) {
-                return usedSpaces[7]
-            }
-        }
-        if usedSpaces[7] == usedSpaces[8] {
-            if GameBoardDelegate.checkSpaceAvailablity(usedSpaces[6], user: false) {
-                return usedSpaces[6]
-            }
-        }
-        return nextAvailableSpace(usedSpaces)
+        var scoreArray = minimax(usedSpaces, isChallenger: isChallenger)
+        return scoreArray[1] as! String
     }
     
+    static func minimax(usedSpaces: [String], isChallenger: Bool) -> NSArray {
+        
+        var legalMoves = [String]()
+        var symbol = String()
+        var bestScore = isChallenger ? -9999999 : 9999999
+        var scoreArray = []
+        var bestMove = String()
+        
+        for moves in usedSpaces {
+            if moves != "X" && moves != "O" {
+                legalMoves.append(moves)
+            }
+        }
+        
+        if legalMoves.count == 0 {
+            bestScore = evaluateScore(usedSpaces)
+        } else {
+        
+        for space in legalMoves {
+            
+            symbol = isChallenger ? self.challengerSymbol : self.userSymbol
+            
+
+            self.minMaxChosenSpaces[space] = symbol
+            self.mappedChosenSpaces = mapButtonsToSpaces(self.minMaxChosenSpaces)
+            
+            if isChallenger {
+                scoreArray = minimax(self.mappedChosenSpaces , isChallenger: !isChallenger)
+                
+                if (scoreArray[0] as! Int) > bestScore {
+                    bestScore = scoreArray[0] as! Int
+                        bestMove = space
+                }
+            } else {
+                scoreArray = minimax(self.mappedChosenSpaces , isChallenger: !isChallenger)
+                
+                if (scoreArray[0] as! Int) < bestScore {
+                    bestScore = scoreArray[0] as! Int
+                    bestMove = space
+                }
+            }
+                self.minMaxChosenSpaces.removeValueForKey(space)
+            }
+        }
+        return [bestScore, bestMove]
+    }
+    
+    
+    static func evaluateScore(usedSpaces: [String]) -> Int {
+        var compScore = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        var count = 0
+        var maxScore = -9999999.0
+        var minScore = 99999999.0
+        var evaluatedScore = 0
+        
+        
+        while count < usedSpaces.count - 1 {
+            for (space, valueArray) in self.winningSequence {
+                
+                for value in valueArray {
+                    if count == value {
+                        
+                        if usedSpaces[count] == challengerSymbol {
+                            compScore[space] += 1.0
+                        } else if usedSpaces[count] == userSymbol {
+                            compScore[space] -= 1.0
+                        } else {
+                            compScore[space] += 0.0
+                        }
+                    }
+                }
+            }
+            count++
+        }
+        for score in compScore {
+            if score > maxScore {
+                maxScore = score
+            } else if score < minScore {
+                minScore = score
+            }
+        }
+        
+        if sqrt(minScore) > sqrt(maxScore) {
+            evaluatedScore = Int(minScore)
+        } else {
+            evaluatedScore = Int(maxScore)
+        }
+        
+        return evaluatedScore
+    }
     
     /**
     Returns a nextAvailable space for computer to select
