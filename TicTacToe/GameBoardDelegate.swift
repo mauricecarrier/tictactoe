@@ -9,7 +9,7 @@
 import UIKit
 
 class GameBoardDelegate: NSObject {
-   
+    
     static var chosenSpacesDict = [String:String]()
     
     /**
@@ -23,11 +23,10 @@ class GameBoardDelegate: NSObject {
     static func checkSpaceAvailablity(spaceChecked: String, user: Bool) -> Bool {
         if (chosenSpacesDict[spaceChecked] == nil && user) ||
             (!user && spaceChecked != "X" && spaceChecked != "O") {
-            return true
+                return true
         } else {
             return false
         }
-    
     }
     
     /**
@@ -48,18 +47,18 @@ class GameBoardDelegate: NSObject {
     
     :param: void
     
-    :returns: chosenSpacesDict Dictionary of chosen spaces and their 
+    :returns: chosenSpacesDict Dictionary of chosen spaces and their
     corresponding symbols
     */
     static func getChosenSpaces() -> [String:String] {
         return chosenSpacesDict
     }
     
-    /** 
+    /**
     Resets chosenSpacesDict
     */
     static func resetChosenSpaces() {
-        chosenSpacesDict = [String:String]() 
+        chosenSpacesDict = [String:String]()
     }
     
     
@@ -152,18 +151,19 @@ class GameBoardDelegate: NSObject {
             }
             
         }
-        
         // Tie
-        if let buttonOne = selectedSpaces["buttonOne"] {
-            if let buttonTwo = selectedSpaces["buttonTwo"] {
-                if let buttonThree = selectedSpaces["buttonThree"] {
-                    if let buttonFour = selectedSpaces["buttonFour"] {
-                        if let buttonFive = selectedSpaces["buttonFive"] {
-                            if let buttonSix = selectedSpaces["buttonSix"] {
-                                if let buttonSeven = selectedSpaces["buttonSeven"] {
-                                    if let buttonEight = selectedSpaces["buttonEight"] {
-                                        if let buttonNine = selectedSpaces["buttonNine"] {
-                                            winDict = [true:"Tie"]
+        if (winDict == [:]) {
+            if let buttonOne = selectedSpaces["buttonOne"] {
+                if let buttonTwo = selectedSpaces["buttonTwo"] {
+                    if let buttonThree = selectedSpaces["buttonThree"] {
+                        if let buttonFour = selectedSpaces["buttonFour"] {
+                            if let buttonFive = selectedSpaces["buttonFive"] {
+                                if let buttonSix = selectedSpaces["buttonSix"] {
+                                    if let buttonSeven = selectedSpaces["buttonSeven"] {
+                                        if let buttonEight = selectedSpaces["buttonEight"] {
+                                            if let buttonNine = selectedSpaces["buttonNine"] {
+                                                winDict = [true:"Tie"]
+                                            }
                                         }
                                     }
                                 }
@@ -175,5 +175,5 @@ class GameBoardDelegate: NSObject {
         }
         return winDict
     }
-
+    
 }

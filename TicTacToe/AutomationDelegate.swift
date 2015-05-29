@@ -40,10 +40,7 @@ class AutomationDelegate: NSObject {
         var challengersSelection = String()
         var usedSpaces : [String] = mapButtonsToSpaces(chosenSpaces)
         self.minMaxChosenSpaces = chosenSpaces
-        
-        if chosenSpaces.count == 0 {
-            return "buttonFive"
-        }
+      
         
         challengersSelection = evaluateBestMove(usedSpaces, isChallenger: true)
         return challengersSelection
@@ -101,11 +98,21 @@ class AutomationDelegate: NSObject {
     */
     static func evaluateBestMove(usedSpaces: [String], isChallenger: Bool) -> String {
         
-        var scoreArray = minimax(usedSpaces, isChallenger: isChallenger)
+        var scoreArray = minimax(2, usedSpaces: usedSpaces, isChallenger: isChallenger)
         return scoreArray[1] as! String
     }
     
-    static func minimax(usedSpaces: [String], isChallenger: Bool) -> NSArray {
+    /**
+    Minimax algorithm, recursively iterates through available moves, comparing min and max scores to 
+    select the most valuable move
+    
+    :param: depth Int value of number of moves to perform
+    :param: usedSpaces String array of spaces previously selected
+    :param: isChallenger Bool value of player making selection
+    
+    :returns: NSArray of the bestMove and it's corresponding bestScore
+    */
+    static func minimax(depth: Int, usedSpaces: [String], isChallenger: Bool) -> NSArray {
         
         var legalMoves = [String]()
         var symbol = String()
@@ -119,33 +126,33 @@ class AutomationDelegate: NSObject {
             }
         }
         
-        if legalMoves.count == 0 {
+        if (legalMoves.count == 0 || depth == 0) {
             bestScore = evaluateScore(usedSpaces)
         } else {
-        
-        for space in legalMoves {
             
-            symbol = isChallenger ? self.challengerSymbol : self.userSymbol
-            
-
-            self.minMaxChosenSpaces[space] = symbol
-            self.mappedChosenSpaces = mapButtonsToSpaces(self.minMaxChosenSpaces)
-            
-            if isChallenger {
-                scoreArray = minimax(self.mappedChosenSpaces , isChallenger: !isChallenger)
+            for space in legalMoves {
                 
-                if (scoreArray[0] as! Int) > bestScore {
-                    bestScore = scoreArray[0] as! Int
+                symbol = isChallenger ? self.challengerSymbol : self.userSymbol
+                
+                
+                self.minMaxChosenSpaces[space] = symbol
+                self.mappedChosenSpaces = mapButtonsToSpaces(self.minMaxChosenSpaces)
+                
+                if isChallenger {
+                    scoreArray = minimax(depth - 1, usedSpaces: self.mappedChosenSpaces , isChallenger: !isChallenger)
+                    
+                    if (scoreArray[0] as! Int) > bestScore {
+                        bestScore = scoreArray[0] as! Int
                         bestMove = space
+                    }
+                } else {
+                    scoreArray = minimax(depth - 1, usedSpaces: self.mappedChosenSpaces , isChallenger: !isChallenger)
+                    
+                    if (scoreArray[0] as! Int) < bestScore {
+                        bestScore = scoreArray[0] as! Int
+                        bestMove = space
+                    }
                 }
-            } else {
-                scoreArray = minimax(self.mappedChosenSpaces , isChallenger: !isChallenger)
-                
-                if (scoreArray[0] as! Int) < bestScore {
-                    bestScore = scoreArray[0] as! Int
-                    bestMove = space
-                }
-            }
                 self.minMaxChosenSpaces.removeValueForKey(space)
             }
         }
@@ -153,69 +160,65 @@ class AutomationDelegate: NSObject {
     }
     
     
+    /**
+    Checks players space selections against winningSequences and returns scores
+    Challenger 1,2,3 in a row == 1,10,100
+    User 1,2,3 in a row == -1,-10,-100
+    
+    :param: usedSpaces String array of spaces taken
+    
+    :returns: score value as an Int
+    */
     static func evaluateScore(usedSpaces: [String]) -> Int {
         var compScore = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
         var count = 0
-        var maxScore = -9999999.0
-        var minScore = 99999999.0
         var evaluatedScore = 0
         
-        
-        while count < usedSpaces.count - 1 {
+        while count < usedSpaces.count {
             for (space, valueArray) in self.winningSequence {
                 
                 for value in valueArray {
                     if count == value {
                         
+                        // Iterate through used spaces, if space matches challenger symbol add 1, if it is userSymbol
+                        // subtract one, if empty add 0
                         if usedSpaces[count] == challengerSymbol {
                             compScore[space] += 1.0
                         } else if usedSpaces[count] == userSymbol {
                             compScore[space] -= 1.0
                         } else {
-                            compScore[space] += 0.0
+                            compScore[space] -= 0
                         }
                     }
                 }
             }
             count++
         }
-        for score in compScore {
-            if score > maxScore {
-                maxScore = score
-            } else if score < minScore {
-                minScore = score
-            }
-        }
         
-        if sqrt(minScore) > sqrt(maxScore) {
-            evaluatedScore = Int(minScore)
-        } else {
-            evaluatedScore = Int(maxScore)
+        // Map values and compile board score
+        for score in compScore {
+            
+            var temp = Int(score)
+            
+            if temp == 1 {
+                temp = 1
+            } else if temp == -1 {
+                temp = -1
+            } else if temp == 2 {
+                temp = 10
+            } else if temp == -2 {
+                temp = -10
+            } else if temp == 3 {
+                temp = 100
+            } else if temp == -3 {
+                temp = -100
+            } else if temp == 0 {
+                temp = 0
+            }
+            
+            evaluatedScore += temp
         }
         
         return evaluatedScore
     }
-    
-    /**
-    Returns a nextAvailable space for computer to select
-    
-    :param: Array of strings representing used spaces
-    
-    :returns: String representing computers best move
-    */
-    static func nextAvailableSpace(usedSpaces: [String]) -> String {
-        var count = 0
-        var selectedSpace = String()
-        
-        for value in usedSpaces {
-            
-            if GameBoardDelegate.checkSpaceAvailablity(value, user: false) {
-                selectedSpace = usedSpaces[count]
-                return selectedSpace
-            }
-            count++
-        }
-        return selectedSpace
-    }
-    
 }
